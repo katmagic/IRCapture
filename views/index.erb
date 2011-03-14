@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="author" value="katmagic <the.magical.kat@gmail.com>" />
+		<meta name="copyright" value="unlicense <http://unlicense.org/>" />
+		<title>IRCapture</title>
+	</head>
+
+	<body>
+		<h1>IRCapture</h1>
+
+		<p>
+			In order to prevent spam, you are required to fill out a CAPTCHA before
+			joining <%= channel %>.
+		</p>
+
+		<form id="signup_form" action="request_invite.html" >
+			<input type="hidden" name="server" value="<%= server %>" />
+			<input type="hidden" name="nick" value="<%= nick %>" />
+			<input type="hidden" name="channel" value="<%= channel %>" />
+
+			<%= erb(:captcha, {}, pubkey: pubkey) %>
+
+      <input type="submit" value="Submit" />
+		</form>
+	</body>
+</html>

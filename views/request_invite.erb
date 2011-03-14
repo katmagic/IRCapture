@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>
+			<% if success %>
+				Success! :-)
+			<% else %>
+				Failure. :-(
+			<% end %>
+		</title>
+	</head>
+
+	<body>
+		<% if success %>
+			<h1>Congratulations, your CAPTCHA was verified!</h1>
+			<p>
+				You successfully completed your CAPTCHA. You should receive an
+				invitation to <%= channel %> on <%= server %> shortly.
+			</p>
+		<% else %>
+			<h1>Sorry, you failed the CAPTCHA.</h1>
+			<p>
+				You seem to have failed your CAPTCHA. If you're actually a human, press
+				the 'Back' button in your browser and try again. If you're not a human,
+				go spam some other channel.
+			</p>
+		<% end %>
+	</body>
+</html>
