@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 require 'sinatra'
+require 'thread'
 require 'net/http'
+require 'cinch'
 require_relative 'config'
 
 # Use HTTP Keep-alive so we don't open a gazillion connections.
@@ -12,6 +14,39 @@ def verifier_session
 		                                               use_ssl: true )
 	end
 end
+
+bot = Cinch::Bot.new do
+	configure do |c|
+		c.server = SERVER[:host]
+		c.port = SERVER[:port]
+		c.ssl = SERVER[:ssl]
+		c.nick = SERVER[:nick]
+		c.channels = CHANNELS
+	end
+
+	on :'710' do |knock|
+		# Cinch doesn't parse this properly.
+		user = knock.params[2].split('!')[0]
+
+		info_fragment = URI.encode_www_form(
+			server: SERVER[:host],
+			nick: user,
+			channel: knock.channel
+		)
+		s = "You must solve the CAPTCHA at #{ACCESS_URL}?#{info_fragment} to " \
+		    "join #{knock.channel}."
+		User(user).msg(s)
+	end
+
+	on :invite do |invite|
+		# We might not be able to access a channel until we're invited to it.
+		if CHANNELS.include? invite.channel
+			invite.channel.join()
+		end
+	end
+end
+
+Thread.new{ bot.start }
 
 get '/' do
 	erb :index, {},
@@ -34,6 +69,7 @@ get '/request_invite.html' do
 
 	if success == 'true'
 		success = true
+		bot.Channel(params[:channel]).invite(params[:nick])
 	elsif reason == 'incorrect-captcha-sol'
 		success = false
 	else
