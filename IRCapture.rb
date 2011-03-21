@@ -37,17 +37,17 @@ bot = Cinch::Bot.new do
 		c.channels = CHANNELS
 	end
 
-	on :'710' do |knock|
+	on :'710' do |ev|
 		# Cinch doesn't parse the user properly.
-		user = knock.params[2].split('!')[0]
+		user = ev.params[2].split('!')[0]
 
-		send_captcha[user, knock.channel]
+		send_captcha[user, ev.channel]
 	end
 
-	on :invite do |invite|
+	on :invite do |ev|
 		# We might not be able to access a channel until we're invited to it.
-		if CHANNELS.include? invite.channel
-			invite.channel.join()
+		if CHANNELS.include? ev.channel
+			ev.channel.join()
 		end
 	end
 end
