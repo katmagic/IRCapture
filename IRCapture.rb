@@ -44,6 +44,14 @@ bot = Cinch::Bot.new do
 		send_captcha[user, ev.channel]
 	end
 
+	on :notice do |ev|
+		if ev.message =~ /^\[Knock\] by ([^!]+)\!/
+			user = $1
+			channel = /^[^#&]?([#&].*)/.match(ev.params[0]).captures[0]
+			send_captcha[user, channel]
+		end
+	end
+
 	on :invite do |ev|
 		# We might not be able to access a channel until we're invited to it.
 		if CHANNELS.include? ev.channel
