@@ -16,6 +16,19 @@ def verifier_session
 end
 
 bot = Cinch::Bot.new do
+	# There's probably a way to make this a real method, but I can't find it, so
+	# this will do for now.
+	send_captcha = lambda do |user, channel|
+		info_fragment = URI.encode_www_form(
+			server: SERVER[:host],
+			nick: user,
+			channel: channel
+		)
+		s = "You must solve the CAPTCHA at #{ACCESS_URL}?#{info_fragment} to " \
+				"join #{channel}."
+		User(user).msg(s)
+	end
+
 	configure do |c|
 		c.server = SERVER[:host]
 		c.port = SERVER[:port]
@@ -25,17 +38,10 @@ bot = Cinch::Bot.new do
 	end
 
 	on :'710' do |knock|
-		# Cinch doesn't parse this properly.
+		# Cinch doesn't parse the user properly.
 		user = knock.params[2].split('!')[0]
 
-		info_fragment = URI.encode_www_form(
-			server: SERVER[:host],
-			nick: user,
-			channel: knock.channel
-		)
-		s = "You must solve the CAPTCHA at #{ACCESS_URL}?#{info_fragment} to " \
-		    "join #{knock.channel}."
-		User(user).msg(s)
+		send_captcha[user, knock.channel]
 	end
 
 	on :invite do |invite|
