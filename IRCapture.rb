@@ -58,6 +58,20 @@ bot = Cinch::Bot.new do
 			ev.channel.join()
 		end
 	end
+
+	on :join do |ev|
+		if ev.user == ev.bot.nick
+			# Apparently we don't get opped for a few moments after we join if we're
+			# the first one in the channel.
+			sleep(1)
+
+			if ev.channel.opped?(ev.user)
+				ev.channel.invite_only = true
+			else
+				ev.channel.msg("I need +o to function properly.")
+			end
+		end
+	end
 end
 
 Thread.new{ bot.start }
