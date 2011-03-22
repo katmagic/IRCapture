@@ -16,17 +16,17 @@ def verifier_session
 end
 
 bot = Cinch::Bot.new do
-	# There's probably a way to make this a real method, but I can't find it, so
-	# this will do for now.
-	send_captcha = lambda do |user, channel|
-		info_fragment = URI.encode_www_form(
-			server: SERVER[:host],
-			nick: user,
-			channel: channel
-		)
-		s = "You must solve the CAPTCHA at #{ACCESS_URL}?#{info_fragment} to " \
-				"join #{channel}."
-		User(user).msg(s)
+	helpers do
+		def send_captcha(user, channel)
+			info_fragment = URI.encode_www_form(
+				server: SERVER[:host],
+				nick: user,
+				channel: channel
+			)
+			s = "You must solve the CAPTCHA at #{ACCESS_URL}?#{info_fragment} to " \
+					"join #{channel}."
+			User(user).msg(s)
+		end
 	end
 
 	configure do |c|
@@ -41,14 +41,14 @@ bot = Cinch::Bot.new do
 		# Cinch doesn't parse the user properly.
 		user = ev.params[2].split('!')[0]
 
-		send_captcha[user, ev.channel]
+		send_captcha(user, ev.channel)
 	end
 
 	on :notice do |ev|
 		if ev.message =~ /^\[Knock\] by ([^!]+)\!/
 			user = $1
 			channel = /^[^#&]?([#&].*)/.match(ev.params[0]).captures[0]
-			send_captcha[user, channel]
+			send_captcha(user, channel)
 		end
 	end
 
