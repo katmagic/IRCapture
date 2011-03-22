@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<link rel="stylesheet" href="/default.css" type="text/css" />
+		<script type="stylesheet">
+			body {
+				background: red;
+			}
+		</script>
 		<title>
 			<% if success %>
 				Success! :-)
@@ -12,18 +18,30 @@
 
 	<body>
 		<% if success %>
-			<h1>Congratulations, your CAPTCHA was verified!</h1>
-			<p>
-				You successfully completed your CAPTCHA. You should receive an
-				invitation to <%= channel %> on <%= server %> shortly.
-			</p>
+			<div id="captcha_success">
+				<h1>Congratulations, your CAPTCHA was verified!</h1>
+				<p>
+					You successfully completed your CAPTCHA. You should receive an
+					invitation to <%= channel %> on <%= server %> shortly.
+				</p>
+
+				<div class="smiley">
+					:-)
+				</div>
+			</div>
 		<% else %>
-			<h1>Sorry, you failed the CAPTCHA.</h1>
-			<p>
-				You seem to have failed your CAPTCHA. If you're actually a human, press
-				the 'Back' button in your browser and try again. If you're not a human,
-				go spam some other channel.
-			</p>
+			<div id="captcha_failure">
+				<h1>Sorry, you failed the CAPTCHA.</h1>
+				<p>
+					You seem to have failed your CAPTCHA. If you're actually a human, press
+					the 'Back' button in your browser and try again. If you're not a human,
+					go spam some other channel.
+				</p>
+
+				<span class="smiley">
+					:-(
+				</div>
+			</div>
 		<% end %>
 	</body>
 </html>

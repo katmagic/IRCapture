@@ -3,13 +3,14 @@
 	<head>
 		<meta name="author" value="katmagic <the.magical.kat@gmail.com>" />
 		<meta name="copyright" value="unlicense <http://unlicense.org/>" />
+		<link rel="stylesheet" href="/default.css" type="text/css" />
 		<title>IRCapture</title>
 	</head>
 
 	<body>
-		<h1>IRCapture</h1>
+		<h1 class="site_title">IRCapture</h1>
 
-		<p>
+		<p class="information">
 			In order to prevent spam, you are required to fill out a CAPTCHA before
 			joining <%= channel %>.
 		</p>
@@ -19,9 +20,9 @@
 			<input type="hidden" name="nick" value="<%= nick %>" />
 			<input type="hidden" name="channel" value="<%= channel %>" />
 
-			<%= erb(:captcha, {}, pubkey: pubkey) %>
-
-      <input type="submit" value="Submit" />
+			<div align="center">
+				<%= erb(:captcha, {}, pubkey: pubkey) %>
+			</div>
 		</form>
 	</body>
 </html>
