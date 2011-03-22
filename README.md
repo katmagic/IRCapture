@@ -22,3 +22,8 @@ IRCapture utilizes [Sinatra](http://www.sinatrarb.com/), which will
 automatically bind to TCP port 4567. You must configure a URL at which we can be
 accessed in `ACCESS_URL`. If, for example, the server's [external] domain name
 is example.net, one would set `ACCESS_URL` to `http://example.net:4567/`.
+
+License
+-------
+This is free and unencumbered software released into the public domain. See
+[unlicense.org](http://unlicense.org) for more information.
