@@ -4,7 +4,7 @@ IRCapture
 IRCapture allows one to protect an IRC channel with a CAPTCHA. *It is still in
 a pre-alpha state*, so don't expect it to work properly.
 
-Usage
+Setup
 -----
 Because IRCapture uses [reCAPTCHA](https://www.google.com/recaptcha), you need
 to have a Google account in order to set it up. Once you've registered for
@@ -22,6 +22,13 @@ IRCapture utilizes [Sinatra](http://www.sinatrarb.com/), which will
 automatically bind to TCP port 4567. You must configure a URL at which we can be
 accessed in `ACCESS_URL`. If, for example, the server's [external] domain name
 is example.net, one would set `ACCESS_URL` to `http://example.net:4567/`.
+
+Client Usage
+------------
+To receive an invitation to a channel protected by IRCapture, simply `KNOCK` on
+it. You will shortly receive a link to a web page that will present you with a
+CAPTCHA. If you solve the CAPTCHA, you will be invited to the protected channel.
+If not, you can go back and try again.
 
 License
 -------
